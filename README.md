@@ -32,19 +32,19 @@
 
 ---
 
-## 📖 เนื้อหา
+## 📖 เนื้อหา (คลิกเพื่อไปยังคู่มือ)
 
-| หัวข้อ | รายละเอียด |
-|---------|-------------|
-| [1. ภาพรวมระบบ](#1-ภาพรวมระบบ) | สถาปัตยกรรมระบบ |
-| [2. การติดตั้ง Qdrant](#2-การติดตั้ง-qdrant-บน-unraid) | ติดตั้งบน Docker/Unraid |
-| [3. การตั้งค่า OpenAI API](#3-การตั้งค่า-openai-api) | สมัคร API Key |
-| [4. Python Dependencies](#4-การติดตั้ง-python-และ-dependencies) | ติดตั้ง Libraries |
-| [5. OCR ด้วย OpenAI Vision](#5-การทำ-ocr-ด้วย-openai-vision) | แปลง PDF เป็นข้อความ |
-| [6. Embedding + Qdrant](#6-การทำ-embedding-และเก็บใน-qdrant) | เก็บข้อมูลใน Vector DB |
-| [7. การค้นหา](#7-การค้นหาข้อมูล) | ค้นหาจาก Knowledge Base |
-| [8. แก้ไขปัญหา](#8-การแก้ไขปัญหาที่พบบ่อย) | Error ที่พบบ่อย |
-| [9. Use Cases](#9-use-cases-และตัวอย่าง) | ตัวอย่างการใช้งานจริง |
+| # | หัวข้อ | ไฟล์ |
+|---|--------|------|
+| 1 | [ภาพรวมระบบ](./docs/RAG-Setup-Guide-TH.md#1-ภาพรวมระบบ) | docs |
+| 2 | [การติดตั้ง Qdrant](./docs/RAG-Setup-Guide-TH.md#2-การติดตั้ง-qdrant-บน-unraid) | docs |
+| 3 | [การตั้งค่า OpenAI API](./docs/RAG-Setup-Guide-TH.md#3-การตั้งค่า-openai-api) | docs |
+| 4 | [Python Dependencies](./docs/RAG-Setup-Guide-TH.md#4-การติดตั้ง-python-และ-dependencies) | docs |
+| 5 | [OCR ด้วย OpenAI Vision](./docs/RAG-Setup-Guide-TH.md#5-การทำ-ocr-ด้วย-openai-vision) | docs |
+| 6 | [Embedding + Qdrant](./docs/RAG-Setup-Guide-TH.md#6-การทำ-embedding-และเก็บใน-qdrant) | docs |
+| 7 | [การค้นหา](./docs/RAG-Setup-Guide-TH.md#7-การค้นหาข้อมูล) | docs |
+| 8 | [แก้ไขปัญหา](./docs/RAG-Setup-Guide-TH.md#8-การแก้ไขปัญหาที่พบบ่อย) | docs |
+| 9 | [Use Cases](./docs/RAG-Setup-Guide-TH.md#9-use-cases-และตัวอย่าง) | docs |
 
 ---
 
