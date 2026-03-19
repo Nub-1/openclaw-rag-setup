@@ -110,6 +110,15 @@ results = search("คำถามของคุณ")
 
 ---
 
+## 📖 เอกสารเพิ่มเติม
+
+| เอกสาร | รายละเอียด |
+|--------|-------------|
+| [คู่มือภาษาไทย](./docs/RAG-Setup-Guide-TH.md) | คู่มือการติดตั้งแบบละเอียด |
+| [Scripts](./scripts/) | Python Scripts สำหรับ OCR และ RAG |
+
+---
+
 ## 📞 ติดต่อ
 
 - **GitHub Issues:** https://github.com/Nub-1/openclaw-rag-setup/issues
