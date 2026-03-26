@@ -8,13 +8,34 @@
 
 ---
 
+## ⚠️ สิ่งสำคัญที่ต้องจำ! (อ่านก่อน!)
+
+**ใช้ OpenAI `text-embedding-3-small` เสมอ - สร้าง 1536 dimensions**
+
+```python
+# ❌ ผิด - model เก่าสร้างแค่ 384 dimensions
+model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
+
+# ✅ ถูกต้อง - ใช้ OpenAI text-embedding-3-small (1536 dimensions)
+response = requests.post(
+    "https://api.openai.com/v1/embeddings",
+    headers={"Authorization": f"Bearer {OPENAI_API_KEY}"},
+    json={"model": "text-embedding-3-small", "input": text}
+)
+embedding = response.json()["data"][0]["embedding"]  # 1536 dimensions
+```
+
+**ห้ามใช้ sentence-transformers กับ collection 1536d เด็ดขาด!**
+
+---
+
 ## 📱 ภาพรวมระบบ
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                        RAG System Architecture                       │
 ├─────────────────────────────────────────────────────────────────────┤
-│   User (Telegram) ──▶ OpenClaw (AI Agent) ──▶ OpenAI API      │
+│   User (Telegram) ──▶ OpenClaw (AI Agent) ──▶ OpenAI API (1536d)   │
 │                            │                                         │
 │                            ▼                                         │
 │                     Python Scripts ──▶ Qdrant (Vector DB)          │
@@ -26,13 +47,13 @@
 ## ✨ ฟีเจอร์
 
 - ✅ **OCR เอกสาร** ด้วย OpenAI Vision API
-- ✅ **Vector Database** ด้วย Qdrant
+- ✅ **Vector Database** ด้วย Qdrant (1536 dimensions)
 - ✅ **Semantic Search** รองรับภาษาไทย
 - ✅ **Automated Pipeline** ด้วย Cron Jobs
 
 ---
 
-## 📖 เนื้อหา (คลิกเพื่อไปยังคู่มือ)
+## 📖 เนื้อหา
 
 | # | หัวข้อ | ไฟล์ |
 |---|--------|------|
@@ -59,7 +80,7 @@ docker run -d -p 6333:6333 -p 6334:6334 \
   qdrant/qdrant:latest
 ```
 
-### 2. สร้าง Collection
+### 2. สร้าง Collection (ใช้ 1536 dimensions!)
 
 ```bash
 curl -X PUT "http://localhost:6333/collections/YOUR-KNOWLEDGE" \
@@ -67,34 +88,32 @@ curl -X PUT "http://localhost:6333/collections/YOUR-KNOWLEDGE" \
   -d '{"vectors": {"size": 1536, "distance": "Cosine"}}'
 ```
 
-### 3. รัน OCR + Embedding
+### 3. ใช้งาน RAG
 
 ```bash
-python3 ocr_bot.py --input your_document.pdf
-```
+# เพิ่มเอกสาร
+python3 rag_openai.py add <collection> "<text>"
 
-### 4. ค้นหา
-
-```python
-results = search("คำถามของคุณ")
+# ค้นหา
+python3 rag_openai.py search <collection> "<query>"
 ```
 
 ---
 
 ## 📦 Scripts ที่มีให้ใช้
 
-| Script | หน้าที่ |
-|--------|---------|
-| `ocr_bot.py` | OCR PDF ด้วย OpenAI Vision |
-| `rag_agent.py` | เพิ่มเอกสารเข้า Qdrant |
-| `ocr_resume.py` | ทำต่อจากที่ค้างไว้ |
+| Script | หน้าที่ | Dimensions |
+|--------|---------|------------|
+| `rag_openai.py` | เพิ่ม/ค้นหาเอกสารด้วย OpenAI | **1536d** ✅ |
+| `ocr_bot.py` | OCR PDF ด้วย OpenAI Vision | - |
+| `rag_agent.py` | เพิ่มเอกสารเข้า Qdrant (เก่า - 384d) | 384d ❌ |
 
 ---
 
 ## 🛠️ Requirements
 
 - Python 3.11+
-- OpenAI API Key
+- **OpenAI API Key** (สำคัญ!)
 - Qdrant (Local หรือ Cloud)
 - Docker (แนะนำ)
 
@@ -105,7 +124,7 @@ results = search("คำถามของคุณ")
 | บริการ | ราคา |
 |--------|------|
 | OpenAI GPT-4o-mini (OCR) | $0.001-0.005/หน้า |
-| OpenAI Embedding | $0.02/1M tokens |
+| **OpenAI text-embedding-3-small** | **$0.01/1M tokens** |
 | Qdrant (Self-host) | ฟรี |
 
 ---
@@ -116,6 +135,20 @@ results = search("คำถามของคุณ")
 |--------|-------------|
 | [คู่มือภาษาไทย](./docs/RAG-Setup-Guide-TH.md) | คู่มือการติดตั้งแบบละเอียด |
 | [Scripts](./scripts/) | Python Scripts สำหรับ OCR และ RAG |
+
+---
+
+## ❌ ข้อผิดพลาดที่พบบ่อย
+
+### Q: ใช้งานไม่ได้ ขึ้น error?
+
+**ตรวจสอบ:**
+1. ใช้ model ให้ถูกต้องหรือไม่?
+   - ✅ ต้องเป็น `text-embedding-3-small` (1536d)
+   - ❌ ห้ามใช้ `paraphrase-multilingual-MiniLM-L12-v2` (384d)
+
+2. Collection dimensions ตรงกับ model หรือไม่?
+   - ถ้าใช้ 1536d → ต้องสร้าง collection ใหม่รองรับ 1536d
 
 ---
 
@@ -131,7 +164,7 @@ MIT License - สามารถนำไปใช้ได้อิสระ
 
 ---
 
-## 👨‍💻 เครดิต
+## 👨💻 เครดิต
 
 | ชื่อ | บทบาท |
 |------|--------|
